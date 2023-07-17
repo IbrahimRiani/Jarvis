@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bot Testing</title>
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bot Testing</h1>
+    <div>
+      <label for="message">Mensaje:</label>
+      <input type="text" id="message" name="message" placeholder="Ingrese un mensaje">
+      <button id="sendButton">Enviar</button>
+    </div>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    const sendButton = document.getElementById('sendButton');
+    const messageInput = document.getElementById('message');
+    const responseDiv = document.getElementById('response');
+
+    sendButton.addEventListener('click', () => {
+      const message = messageInput.value;
+      fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          type: 'message',
+          text: message
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        responseDiv.innerText = data.text;
+      });
+    });
+  </script>
+</body>
+</html>
